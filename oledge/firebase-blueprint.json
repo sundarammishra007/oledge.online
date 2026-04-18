@@ -1,0 +1,387 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for students, govt, colleges, and companies.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID from Firebase Auth" },
+        "name": { "type": "string", "description": "Full name or organization name" },
+        "email": { "type": "string", "format": "email", "description": "Contact email" },
+        "photoURL": { "type": "string", "description": "URL to profile picture" },
+        "backgroundURL": { "type": "string", "description": "URL to background picture" },
+        "mobileNo": { "type": "string", "description": "Mobile number" },
+        "role": { "type": "string", "enum": ["student", "govt", "college", "company", "admin"], "description": "User role" },
+        "college": { "type": "string", "description": "College name (for students and ambassadors)" },
+        "branch": { "type": "string", "description": "Academic branch (for students)" },
+        "skills": { "type": "array", "items": { "type": "string" }, "description": "List of skills" },
+        "resumeUrl": { "type": "string", "description": "URL to resume" },
+        "portfolioLinks": { "type": "array", "items": { "type": "string" }, "description": "Portfolio or social links" },
+        "interests": { "type": "array", "items": { "type": "string" }, "description": "Internship or career interests" },
+        "isVerified": { "type": "boolean", "description": "Verification status for colleges and companies" },
+        "referralCount": { "type": "integer", "description": "Number of friends referred" },
+        "isCampusAmbassador": { "type": "boolean", "description": "Whether the student is promoted to ambassador status" },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "link": { "type": "string" },
+              "technologies": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "description": "Showcase of user projects"
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "issuer": { "type": "string" },
+              "issueDate": { "type": "string" },
+              "expiryDate": { "type": "string" },
+              "certificateUrl": { "type": "string" },
+              "certificateData": { "type": "string", "description": "Base64 encoded certificate" },
+              "taggedEntityId": { "type": "string" },
+              "taggedEntityName": { "type": "string" },
+              "taggedEntityType": { "type": "string", "enum": ["company", "college", "govt"] },
+              "isVerifiedByEntity": { "type": "boolean" }
+            }
+          },
+          "description": "User certifications"
+        },
+        "volunteerExperience": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "type": "string" },
+              "organization": { "type": "string" },
+              "description": { "type": "string" },
+              "startDate": { "type": "string" },
+              "endDate": { "type": "string" }
+            }
+          },
+          "description": "Volunteer work experience"
+        },
+        "summary": { "type": "string", "description": "Professional summary for resume" },
+        "education": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "school": { "type": "string" },
+              "degree": { "type": "string" },
+              "fieldOfStudy": { "type": "string" },
+              "startDate": { "type": "string" },
+              "endDate": { "type": "string" },
+              "grade": { "type": "string" }
+            }
+          },
+          "description": "Academic history"
+        },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation timestamp" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Internship": {
+      "title": "Internship",
+      "description": "Internship listing posted by companies.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "companyId": { "type": "string" },
+        "companyName": { "type": "string" },
+        "location": { "type": "string" },
+        "isRemote": { "type": "boolean" },
+        "stipend": { "type": "string" },
+        "description": { "type": "string" },
+        "skillsRequired": { "type": "array", "items": { "type": "string" } },
+        "deadline": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "companyId", "companyName", "description"]
+    },
+    "Hackathon": {
+      "title": "Hackathon",
+      "description": "Hackathon or competition event.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "eventName": { "type": "string" },
+        "organizer": { "type": "string" },
+        "description": { "type": "string" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "applyUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["eventName", "organizer", "deadline"]
+    },
+    "JobFair": {
+      "title": "JobFair",
+      "description": "Job fair or walk-in hiring event.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "location": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "organizer": { "type": "string" },
+        "companies": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "location", "date"]
+    },
+    "FreelanceProject": {
+      "title": "FreelanceProject",
+      "description": "Small freelance project for students.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "budget": { "type": "string" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "description": { "type": "string" },
+        "skillsRequired": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "budget", "deadline"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Book published in the library.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "publisherId": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "author", "publisherId"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "Academic or event calendar entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "type": { "type": "string", "enum": ["academic", "exam", "holiday", "event"] },
+        "creatorId": { "type": "string" },
+        "creatorRole": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "date", "type", "creatorId"]
+    },
+    "Apprenticeship": {
+      "title": "Apprenticeship",
+      "description": "Apprenticeship listing posted by govt, company, or college.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "organizer": { "type": "string" },
+        "organizerId": { "type": "string" },
+        "organizerRole": { "type": "string", "enum": ["govt", "company", "college"] },
+        "location": { "type": "string" },
+        "duration": { "type": "string" },
+        "stipend": { "type": "string" },
+        "description": { "type": "string" },
+        "skillsRequired": { "type": "array", "items": { "type": "string" } },
+        "deadline": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "organizer", "organizerId", "organizerRole", "description"]
+    },
+    "Notice": {
+      "title": "Notice",
+      "description": "Notice board post.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorRole": { "type": "string", "enum": ["govt", "college", "company", "admin"] },
+        "reactions": {
+          "type": "object",
+          "properties": {
+            "acknowledge": { "type": "array", "items": { "type": "string" } },
+            "inspiring": { "type": "array", "items": { "type": "string" } },
+            "useful": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "reposts": { "type": "array", "items": { "type": "string" } },
+        "commentsCount": { "type": "integer" },
+        "type": { "type": "string", "enum": ["notice", "achievement"], "description": "Type of post" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "authorId", "authorName", "authorRole"]
+    },
+    "FriendRequest": {
+      "title": "FriendRequest",
+      "description": "Campus friend request between users.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["senderId", "senderName", "receiverId", "status"]
+    },
+    "Seminar": {
+      "title": "Seminar",
+      "description": "Seminar or webinar event.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["seminar", "webinar"] },
+        "organizer": { "type": "string" },
+        "organizerId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "time": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "registrationUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "type", "organizer", "organizerId", "date"]
+    },
+    "ForumPost": {
+      "title": "ForumPost",
+      "description": "A blog post or a question in the forum.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorRole": { "type": "string" },
+        "type": { "type": "string", "enum": ["blog", "question"] },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "upvotes": { "type": "array", "items": { "type": "string" } },
+        "downvotes": { "type": "array", "items": { "type": "string" } },
+        "viewsCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "content", "authorId", "authorName", "type"]
+    },
+    "ForumComment": {
+      "title": "ForumComment",
+      "description": "A comment or answer on a forum post.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "postId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorRole": { "type": "string" },
+        "content": { "type": "string" },
+        "upvotes": { "type": "array", "items": { "type": "string" } },
+        "isCorrectAnswer": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorName", "content"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "An event such as an award ceremony, farewell, or annual function.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "time": { "type": "string" },
+        "location": { "type": "string" },
+        "organizer": { "type": "string" },
+        "organizerId": { "type": "string" },
+        "category": { "type": "string", "enum": ["award_ceremony", "farewell", "annual_function", "national_event", "international_event", "celebration"] },
+        "image": { "type": "string" },
+        "registrationUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "description", "date", "category", "organizerId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/internships/{internshipId}": {
+      "schema": "Internship",
+      "description": "Internship listings."
+    },
+    "/hackathons/{hackathonId}": {
+      "schema": "Hackathon",
+      "description": "Hackathon and competition events."
+    },
+    "/jobfairs/{jobfairId}": {
+      "schema": "JobFair",
+      "description": "Job fair listings."
+    },
+    "/freelance_projects/{projectId}": {
+      "schema": "FreelanceProject",
+      "description": "Freelance project listings."
+    },
+    "/library/{bookId}": {
+      "schema": "Book",
+      "description": "Library books."
+    },
+    "/calendar/{eventId}": {
+      "schema": "CalendarEvent",
+      "description": "Academic calendar events."
+    },
+    "/apprenticeships/{apprenticeshipId}": {
+      "schema": "Apprenticeship",
+      "description": "Apprenticeship listings."
+    },
+    "/notices/{noticeId}": {
+      "schema": "Notice",
+      "description": "Notice board posts."
+    },
+    "/notices/{noticeId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Comments on notices."
+    },
+    "/friend_requests/{requestId}": {
+      "schema": "FriendRequest",
+      "description": "Campus friend requests."
+    },
+    "/seminars/{seminarId}": {
+      "schema": "Seminar",
+      "description": "Seminar and webinar listings."
+    },
+    "/forum_posts/{postId}": {
+      "schema": "ForumPost",
+      "description": "Forum blog posts and questions."
+    },
+    "/forum_posts/{postId}/comments/{commentId}": {
+      "schema": "ForumComment",
+      "description": "Comments and answers on forum posts."
+    },
+    "/events/{eventId}": {
+      "schema": "Event",
+      "description": "Events like award ceremonies, farewells, etc."
+    }
+  }
+}
