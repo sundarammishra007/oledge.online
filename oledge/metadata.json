@@ -1,9 +1,0 @@
-{
-  "name": "OLEDGE",
-  "description": "Original Growth of Bharat - Digital career headquarters for the youth of Bharat. A campus ecosystem platform for internships, hackathons, job fairs, and freelance work.",
-  "requestFramePermissions": [
-    "camera",
-    "microphone",
-    "geolocation"
-  ]
-}
