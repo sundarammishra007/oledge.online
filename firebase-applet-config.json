@@ -1,4 +1,12 @@
-{
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
   apiKey: "AIzaSyDMV9wjkiOjocqwRD_RzZ7JrooH7vvRZmE",
   authDomain: "oledge.firebaseapp.com",
   databaseURL: "https://oledge-default-rtdb.europe-west1.firebasedatabase.app",
@@ -8,3 +16,7 @@
   appId: "1:809351758992:web:080ae757ccb9468df70415",
   measurementId: "G-0MMLWL0LR4"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
