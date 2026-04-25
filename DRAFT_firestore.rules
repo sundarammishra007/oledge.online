@@ -1,0 +1,211 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
+    // Global Helpers
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == "sundarammishra000001@gmail.com" && request.auth.token.email_verified == true ||
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // ===============================================================
+    // Validation Blueprints
+    // ===============================================================
+    
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name', 'email', 'role']) &&
+             data.uid == request.auth.uid &&
+             data.name is string && data.name.size() <= 100 &&
+             data.email == request.auth.token.email &&
+             data.role in ['student', 'govt', 'college', 'company', 'admin'];
+    }
+
+    function isValidNotice(data) {
+      return data.keys().hasAll(['title', 'content', 'authorId', 'authorName', 'authorRole']) &&
+             data.authorId == request.auth.uid &&
+             data.title is string && data.title.size() <= 200 &&
+             data.content is string && data.content.size() <= 10000;
+    }
+
+    function isValidJob(data) {
+      return data.keys().hasAll(['title', 'companyId', 'companyName', 'type', 'description']) &&
+             data.companyId == request.auth.uid &&
+             data.title is string && data.title.size() <= 200 &&
+             data.type in ['full-time', 'part-time', 'freelance', 'internship'];
+    }
+
+    function isValidQuiz(data) {
+      return data.keys().hasAll(['title', 'description', 'category', 'questionsCount', 'timeLimit', 'difficulty']) &&
+             data.title is string && data.title.size() <= 200 &&
+             data.category in ['tech', 'aptitude', 'general', 'coding'];
+    }
+
+    function isValidEBook(data) {
+      return data.keys().hasAll(['title', 'authorName', 'authorId', 'category', 'content']) &&
+             data.authorId == request.auth.uid &&
+             data.title is string && data.title.size() <= 200;
+    }
+
+    function isValidEvent(data) {
+      return data.keys().hasAll(['title', 'description', 'date', 'category', 'organizerId']) &&
+             data.organizerId == request.auth.uid &&
+             data.title is string && data.title.size() <= 200;
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(incoming());
+      allow update: if (isOwner(userId) || isAdmin()) && isValidUser(incoming());
+    }
+
+    match /internships/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && (isAdmin() || (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'company'));
+      allow update, delete: if isAuthenticated() && (existing().companyId == request.auth.uid || isAdmin());
+    }
+
+    match /hackathons/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && (existing().organizerId == request.auth.uid || isAdmin());
+    }
+
+    match /jobfairs/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && (existing().organizerId == request.auth.uid || isAdmin());
+    }
+
+    match /freelance_projects/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && (existing().creatorId == request.auth.uid || isAdmin());
+    }
+
+    match /jobs/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidJob(incoming());
+      allow update, delete: if isAuthenticated() && (existing().companyId == request.auth.uid || isAdmin());
+    }
+
+    match /quizzes/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidQuiz(incoming());
+      allow update, delete: if isAuthenticated() && (existing().creatorId == request.auth.uid || isAdmin());
+    }
+
+    match /library/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidEBook(incoming());
+      allow update: if isAuthenticated() && (
+        existing().authorId == request.auth.uid || 
+        isAdmin() || 
+        incoming().diff(existing()).affectedKeys().hasAll(['reactions', 'republishedBy', 'commentsCount'])
+      );
+      allow delete: if isAuthenticated() && (existing().authorId == request.auth.uid || isAdmin());
+    }
+
+    match /calendar/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && (existing().creatorId == request.auth.uid || isAdmin());
+    }
+
+    match /apprenticeships/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && (existing().organizerId == request.auth.uid || isAdmin());
+    }
+
+    match /notices/{noticeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidNotice(incoming());
+      allow update: if isAuthenticated() && (
+        existing().authorId == request.auth.uid || 
+        isAdmin() || 
+        incoming().diff(existing()).affectedKeys().hasOnly(['reactions', 'reposts', 'commentsCount'])
+      );
+      allow delete: if isAuthenticated() && (existing().authorId == request.auth.uid || isAdmin());
+
+      match /comments/{commentId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+        allow delete: if isAuthenticated() && (existing().authorId == request.auth.uid || isAdmin());
+      }
+    }
+
+    match /friend_requests/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && incoming().senderId == request.auth.uid;
+      allow update: if isAuthenticated() && (existing().receiverId == request.auth.uid || isAdmin());
+      allow delete: if isAuthenticated() && (existing().senderId == request.auth.uid || existing().receiverId == request.auth.uid || isAdmin());
+    }
+
+    match /seminars/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && (existing().organizerId == request.auth.uid || isAdmin());
+    }
+
+    match /forum_posts/{postId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (
+        existing().authorId == request.auth.uid || 
+        isAdmin() || 
+        incoming().diff(existing()).affectedKeys().hasAny(['upvotes', 'downvotes', 'viewsCount', 'commentsCount'])
+      );
+      allow delete: if isAuthenticated() && (existing().authorId == request.auth.uid || isAdmin());
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isAuthenticated();
+        allow update: if isAuthenticated() && (
+          existing().authorId == request.auth.uid || 
+          isAdmin() || 
+          incoming().diff(existing()).affectedKeys().hasOnly(['upvotes', 'isCorrectAnswer'])
+        );
+        allow delete: if isAuthenticated() && (existing().authorId == request.auth.uid || isAdmin());
+      }
+    }
+
+    match /events/{id} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidEvent(incoming());
+      allow update, delete: if isAuthenticated() && (existing().organizerId == request.auth.uid || isAdmin());
+    }
+  }
+}
