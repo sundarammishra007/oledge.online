@@ -1,10 +1,10 @@
 {
-  apiKey: "AIzaSyDMV9wjkiOjocqwRD_RzZ7JrooH7vvRZmE",
-  authDomain: "oledge.firebaseapp.com",
-  databaseURL: "https://oledge-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "oledge",
-  storageBucket: "oledge.firebasestorage.app",
-  messagingSenderId: "809351758992",
-  appId: "1:809351758992:web:080ae757ccb9468df70415",
-  measurementId: "G-0MMLWL0LR4"
-};
+  "projectId": "oledge",
+  "appId": "1:809351758992:web:080ae757ccb9468df70415",
+  "apiKey": "AIzaSyDMV9wjkiOjocqwRD_RzZ7JrooH7vvRZmE",
+  "authDomain": "oledge.firebaseapp.com",
+  "firestoreDatabaseId": "https://oledge-default-rtdb.europe-west1.firebasedatabase.app",
+  "storageBucket": "oledge.firebasestorage.app",
+  "messagingSenderId": "809351758992",
+  "measurementId": "G-0MMLWL0LR4"
+}
