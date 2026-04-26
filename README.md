@@ -1,20 +1,32 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+🎓 Oledge - Integrated Career & Governance Ecosystem
+Oledge ek multi-dimensional platform hai jo Education, Corporate, aur Government services ko ek hi jagah lata hai. Yeh ecosystem students aur professionals ke liye ek bridge ka kaam karta hai, jo Bihar ke startup vision ke saath aligned hai.
 
-# Run and deploy your AI Studio app
+🏛️ The Oledge Ecosystem
+Oledge sirf ek app nahi, balki teen bade pillars ka integration hai:
 
-This contains everything you need to run your app locally.
+College Connect: Students ke liye admission guidance, college news, aur career roadmap tools.
 
-View your app in AI Studio: https://ai.studio/apps/d892d0e6-e392-4bfd-93cd-40a1df2c16c9
+Corporate Interface: Companies ke liye hiring, professional networking, aur startup compliance management.
 
-## Run Locally
+Govt. Integration: Government schemes, startup policies (jaise Bihar Startup Policy), aur educational initiatives ka direct access.
+jobs and Hackathons, apprenticeship and more (quizes , job- fairs ) 
+🛠️ Tech Stack
+Frontend: Typescript (Cross-platform support)
 
-**Prerequisites:**  Node.js
+Backend: Firebase (Authentication, Firestore, Storage)
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+⚙️ Setup & Configuration
+Is project ko local system par chalane ke liye:
+
+Repository Clone karein:
+
+Bash
+git clone https://github.com/sundarammishra007/oledge.git
+Firebase Setup:
+
+firebase-applet-config.json ya lib/firebase_options.dart mein apni Firebase keys update karein.
+
+
+📝 Author
+Oledge Group Private Limited Empowering careers through technology.
