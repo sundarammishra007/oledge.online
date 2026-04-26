@@ -19,7 +19,7 @@ import Apprenticeships from './components/Apprenticeships';
 import NoticeBoard from './components/NoticeBoard';
 import Forum from './components/Forum';
 import Events from './components/Events';
-import CampusFriends from './components/CampusFriends';
+import CircleConnect from './components/CircleConnect';
 import Seminars from './components/Seminars';
 import Opportunities from './components/Opportunities';
 import Jobs from './components/Jobs';
@@ -103,7 +103,7 @@ export default function App() {
               <Route path="/noticeboard" element={<NoticeBoard user={user} />} />
               <Route path="/forum" element={<Forum user={user} />} />
               <Route path="/events" element={<Events user={user} />} />
-              <Route path="/friends" element={<CampusFriends user={user} />} />
+              <Route path="/Peers" element={<CircleConnect user={user} />} />
               <Route path="/seminars" element={<Seminars user={user} />} />
               <Route path="/about" element={<About />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
