@@ -32,11 +32,11 @@ import {
 import { cn } from '../lib/utils';
 import ChatComponent from './Chat';
 
-interface circleconnectsProps {
+interface CircleConnectsProps {
   user: User;
 }
 
-export default function circleconnects({ user }: circleconnectsProps) {
+export default function CircleConnects({ user }: CircleConnectsProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [pendingRequests, setPendingRequests] = useState<connect[]>([]);
