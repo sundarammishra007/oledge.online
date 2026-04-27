@@ -19,7 +19,8 @@ import Apprenticeships from './components/Apprenticeships';
 import NoticeBoard from './components/NoticeBoard';
 import Forum from './components/Forum';
 import Events from './components/Events';
-import CircleConnect from './components/CircleConnect';
+import CircleFriends from './components/CircleFriends';
+import Notes from './components/Notes';
 import Seminars from './components/Seminars';
 import Opportunities from './components/Opportunities';
 import Jobs from './components/Jobs';
@@ -27,6 +28,7 @@ import Quizzes from './components/Quizzes';
 import WalkIns from './components/WalkIns';
 import About from './components/About';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import Splash from './components/Splash';
 import { User } from './types';
 
 export default function App() {
@@ -103,7 +105,8 @@ export default function App() {
               <Route path="/noticeboard" element={<NoticeBoard user={user} />} />
               <Route path="/forum" element={<Forum user={user} />} />
               <Route path="/events" element={<Events user={user} />} />
-              <Route path="/Peers" element={<CircleConnect user={user} />} />
+              <Route path="/friends" element={<CircleFriends user={user} />} />
+              <Route path="/notes" element={<Notes user={user} />} />
               <Route path="/seminars" element={<Seminars user={user} />} />
               <Route path="/about" element={<About />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
