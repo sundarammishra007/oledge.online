@@ -1,4 +1,4 @@
-<p align="center"> <img src="public/oledge icon.png" width="250" alt="oledge icon"></p>
+<p align="center"> <img src="public/oledge icon.png" width="125" alt="oledge icon"></p>
 
 🎓 Oledge - Integrated Career & Governance Ecosystem
 Oledge ek multi-dimensional platform hai jo Education, Corporate, aur Government services ko ek hi jagah lata hai. Yeh ecosystem students aur professionals ke liye ek bridge ka kaam karta hai, jo Bihar ke startup vision ke saath aligned hai.
